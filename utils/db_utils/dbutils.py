@@ -1,17 +1,19 @@
 import snowflake.connector
-import configparser
-import os
+from utils.db_utils.snowflake_db import SnowflakeConnector
+from utils.db_utils.config_utils import load_config
 
 
-def load_config(namespace):
-    _CONFIG_FILE_PATH: str = 'config.ini'
-    config = configparser.ConfigParser()
-    if os.path.exists(_CONFIG_FILE_PATH):
-        config.read(_CONFIG_FILE_PATH)
-    else:
-        print("Config.ini is missing")
+def sf_execute_v2(query):
+    result = []
 
-    return config[namespace]
+    print("Creating snowflake connection...")
+    connector = SnowflakeConnector()
+    with connector.get_connection() as conn:
+        with conn.cursor() as cur:
+            print("Executing query...")
+            result = cur.execute(query).fetchall()
+
+    return result
 
 
 def sf_execute(query):
