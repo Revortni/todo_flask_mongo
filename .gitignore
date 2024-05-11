@@ -1,3 +1,5 @@
 .venv
 config.ini
 *.pyc
+*/__pycache__
+.pytest_cache
