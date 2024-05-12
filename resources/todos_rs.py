@@ -21,7 +21,7 @@ def save_todo():
         # Parse the JSON data into a Pydantic model
         new_todo = models.Todo.model_validate_json(request.data)
         print(new_todo)
-        todo_service.create_todo(new_todo)
+        todo_service.create_todo(new_todo.model_dump())
 
         return jsonify(new_todo.model_dump())
 
