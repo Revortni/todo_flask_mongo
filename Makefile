@@ -3,3 +3,6 @@ start:
 
 flask:
 	flask --app api --debug run 
+
+mongo:
+	docker compose up -d

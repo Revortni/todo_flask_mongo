@@ -1,10 +1,11 @@
-from flask import Flask, url_for, request
+import traceback
+from flask import Flask, url_for, request, jsonify
 from markupsafe import escape
-from controller import todos_controller
 
+from resources import todos_rs
 
 app = Flask(__name__)
-app.register_blueprint(todos_controller.router, url_prefix='/todos')
+app.register_blueprint(todos_rs.router, url_prefix='/todos')
 
 
 @app.route('/')
@@ -21,6 +22,17 @@ def home():
 def profile(user_id):
     return f"<p>Your id is {user_id}!</p>"
 
+
+@app.errorhandler(Exception)
+def internal_server_error(exception):
+    traceback.print_exception(
+        type(exception), exception, exception.__traceback__)
+    message = 'Internal Server Error'
+    if hasattr(exception, 'message'):
+        message = exception.message
+    response = jsonify({'errors': [message]})
+    response.status_code = 500
+    return response
 
 # with app.test_request_context():
 #     print(url_for('index'))
