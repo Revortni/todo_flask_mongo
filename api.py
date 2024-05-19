@@ -27,11 +27,14 @@ def create_app():
     def internal_server_error(exception):
         traceback.print_exception(
             type(exception), exception, exception.__traceback__)
+
         message = 'Internal Server Error'
         if hasattr(exception, 'message'):
             message = exception.message
+
         response = jsonify({'errors': [message]})
         response.status_code = 500
+
         return response
 
     return app
