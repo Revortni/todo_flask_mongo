@@ -1,7 +1,12 @@
 from utils.db_utils import mongo_db
-
-todo_collections = mongo_db.db_manager.get_collection('todos')
+from models.todo import Todo
 
 
 def create_todo(todoObj):
-    todo_collections.insert_one(todoObj)
+    todo = Todo(**todoObj)
+    todo.save()
+    return todo
+
+
+def fetch_all():
+    return Todo.objects.all()
