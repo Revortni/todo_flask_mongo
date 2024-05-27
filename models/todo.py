@@ -1,6 +1,6 @@
 from mongoengine import StringField, Document, BooleanField, DateTimeField
 from datetime import datetime
-from utils.db_utils import mongo_db
+from db import mongo_db
 
 mongo_db.db_manager.get_connection("default")
 
