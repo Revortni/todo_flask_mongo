@@ -1,12 +1,14 @@
 from mongoengine import connect, disconnect
 
+from utils.db_utils.config_utils import load_config
+
 
 class MongoDbManager:
     """
     A simple abstraction layer for interacting with MongoDB from a Flask application.
     """
 
-    def __init__(self, config):
+    def __init__(self, config=None):
         """
         Initializes the MongoDB connection using configuration values.
 
@@ -16,6 +18,8 @@ class MongoDbManager:
                 port: The port number of the MongoDB server (default: 27017).
                 database: The name of the database to connect to.
         """
+        if not config:
+            config = load_config('mongo')
         self.config = config
         self.connection = None
         self.alias = ''
@@ -30,15 +34,18 @@ class MongoDbManager:
         Returns:
             pymongo.collection.Collection: A reference to the requested collection.
         """
-        self.connection = connect(
-            alias=alias,
-            db=config['database'],
-            username=config['user'],
-            password=config['password'],
-            authentication_source='admin',
-            host='localhost'
-        )
-        self.alias = alias
+        try:
+            self.connection = connect(
+                alias=alias,
+                db=self.config['database'],
+                username=self.config['user'],
+                password=self.config['password'],
+                authentication_source='admin',
+                host=self.config['host']
+            )
+            self.alias = alias
+        except Exception as e:
+            print(f"Unable to connect to db: {e}")
 
         return self.connection
 
@@ -46,15 +53,5 @@ class MongoDbManager:
         disconnect(alias=self.alias)
 
 
-# Configure MongoDB connection details
-config = {
-    'user': 'admin',
-    'password': 'password',
-    'host': 'localhost',
-    'port': 27017,
-    'database': 'project'
-}
-
-
 # Create an instance of the MongoDbManager
-db_manager = MongoDbManager(config)
+db_manager = MongoDbManager()
