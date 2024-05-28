@@ -1,9 +1,10 @@
 from mongoengine import connect, disconnect
 
+from db.interface import ORMInterface
 from utils.db_utils.config_utils import load_config
 
 
-class MongoDbManager:
+class MongoDbManager(ORMInterface):
     """
     A simple abstraction layer for interacting with MongoDB from a Flask application.
     """
@@ -24,7 +25,7 @@ class MongoDbManager:
         self.connection = None
         self.alias = ''
 
-    def get_connection(self, alias):
+    def connect(self, alias):
         """
         Retrieves a reference to the specified MongoDB collection.
 

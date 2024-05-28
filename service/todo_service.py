@@ -20,3 +20,9 @@ def get_todo_for_id(todo_id):
     result = todo_repo.fetch_by_id(todo_id)
 
     return result
+
+
+def delete_todo(todo_id):
+    result = todo_repo.delete(todo_id)
+
+    return result

@@ -2,7 +2,7 @@ from mongoengine import StringField, Document, BooleanField, DateTimeField
 from datetime import datetime
 from db import mongo_db
 
-mongo_db.db_manager.get_connection("default")
+mongo_db.db_manager.connect("default")
 
 
 class Todo(Document):

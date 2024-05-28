@@ -42,3 +42,14 @@ def fetch_all() -> List[Todo]:
 
 def fetch_by_id(todo_id: str) -> Todo:
     return Todo.objects.get(pk=todo_id)
+
+
+def delete(todo_id: str) -> str:
+    try:
+        todo = Todo.objects.get(pk=todo_id)
+        todo.delete()
+        return todo_id
+
+    except Exception as e:
+        logging.info(print(f"Failed to delete: {e}"))
+        raise e

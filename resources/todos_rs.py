@@ -53,4 +53,20 @@ def update_todo(todo_id):
 
     except ValidationError as e:
         logging.error(e)
-        return jsonify({'error': str(e)}), 400
+        return jsonify({'error': str(e)}), 500
+
+    except Exception as e:
+        logging.error(e)
+        return jsonify({'error': str(e)}), 500
+
+
+@router.delete('/todo/<string:todo_id>')
+def delete_todo(todo_id):
+    try:
+        todo = todo_service.delete_todo(todo_id)
+
+        return todo, 200
+
+    except Exception as e:
+        logging.error(e)
+        return jsonify({'error': str(e)}), 500
